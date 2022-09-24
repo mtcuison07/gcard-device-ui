@@ -5,6 +5,7 @@
  */
 package org.rmj.gcard.device.ui;
 
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,6 +18,7 @@ import org.rmj.appdriver.agentfx.ui.ValidateOTPx;
 import org.rmj.appdriver.agentfx.ui.showFXDialog;
 import org.rmj.gcard.service.GCLoadInfo;
 import javafx.application.Application;
+import org.rmj.appdriver.SQLUtil;
 import org.rmj.appdriver.agentfx.ui.ValidateOTP;
 
 /**
@@ -51,12 +53,15 @@ public class GCardDeviceNone implements GCardDevice{
         //try to pull out data from the central server first
         JSONObject result = GCLoadInfo.GetCardInfoOnline(poGRider, psCardNmbr);
         String success = (String)result.get("result");
+        
+        Calendar calendar = Calendar.getInstance();
+        
         if(success.equalsIgnoreCase("success")){
             pbOnlinex = true;
             poDetail = (JSONObject) result;
             poDetail.put("sIMEINoxx", "");
             poDetail.put("sUserIDxx", "");
-            poDetail.put("dQRDateTm", "");
+            poDetail.put("dQRDateTm", SQLUtil.dateFormat(calendar.getTime(), SQLUtil.FORMAT_TIMESTAMP));
             poDetail.put("bIsOnline", true);
             poDetail.put("nDevPoint", Double.valueOf(poDetail.get("nTotPoint").toString()).longValue());
             return true;
@@ -70,7 +75,7 @@ public class GCardDeviceNone implements GCardDevice{
             poDetail = (JSONObject) result;
             poDetail.put("sIMEINoxx", "");
             poDetail.put("sUserIDxx", "");
-            poDetail.put("dQRDateTm", "");
+            poDetail.put("dQRDateTm", SQLUtil.dateFormat(calendar.getTime(), SQLUtil.FORMAT_TIMESTAMP));
             poDetail.put("bIsOnline", false);
             poDetail.put("nDevPoint", Double.valueOf(poDetail.get("nTotPoint").toString()).longValue());
             return true;

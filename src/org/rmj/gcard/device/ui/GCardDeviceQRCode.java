@@ -117,52 +117,55 @@ public class GCardDeviceQRCode implements GCardDevice{
         }
         
         if (System.getProperty("app.gcard.digital.1").equals("0")){ //mobile app qr scanning code validation
-            String qrdata = (String) poTransx.get("SOURCE") 
-                                + "»" + (String) poTransx.get("sOTPasswd")
-                                + "»" + (String) poDetail.get("sMobileNo")
-                                + "»" + (String) poDetail.get("sUserIDxx")
-                                + "»" + (String) poDetail.get("sCardNmbr")
-                                + "»" + (String) poDetail.get("sMobileNo");
-            
-            //(String) poDetail.get("sIMEINoxx")
-            JSONArray artrans = (JSONArray) poTransx.get("DETAIL");
-            Iterator<JSONObject> iterator = artrans.iterator();
-            String trans = "";
-
-            while (iterator.hasNext()) {
-              JSONObject oJson = iterator.next();
-              trans += ";" + (String) oJson.get("sTransNox")
-                      + "@" + oJson.get("dTransact").toString()
-                      + "@" + (String) oJson.get("sSourceNo")
-                      + "@" + (String) oJson.get("sSourceCD")
-                      + "@" + ((Double) oJson.get("nPointsxx")).longValue();
-            }
-
-            qrdata += "»" + trans.substring(1);
-
-            System.out.println(qrdata);
-            qrdata = qrdata.replaceAll("[^A-Za-z0-9+.»;@-]", "");
-            qrdata = MySQLAESCrypt.Encrypt(qrdata, "20190625");
-            String otp = (String) poTransx.get("sOTPasswd");
-
-            String qrpin = "";
-            try{
-                ScanPin loPin = new ScanPin();
-                loPin.setData(qrdata);
-                
-                javafx.application.Application.launch(loPin.getClass());
-                
-                qrpin = loPin.getData();
-            }catch (Exception ex){
-                qrpin = Webcam.getPIN(qrdata);
-            }
-
-            if (qrpin.equalsIgnoreCase(otp))
-                return true;
-            else {
-                psMessagex = "QR code not matched from the transaction.";
-                return false;
-            }
+            return true;
+//mac 2024.02.26
+//  comment out this block of code for implementation of TDS
+//            String qrdata = (String) poTransx.get("SOURCE") 
+//                                + "»" + (String) poTransx.get("sOTPasswd")
+//                                + "»" + (String) poDetail.get("sMobileNo")
+//                                + "»" + (String) poDetail.get("sUserIDxx")
+//                                + "»" + (String) poDetail.get("sCardNmbr")
+//                                + "»" + (String) poDetail.get("sMobileNo");
+//            
+//            //(String) poDetail.get("sIMEINoxx")
+//            JSONArray artrans = (JSONArray) poTransx.get("DETAIL");
+//            Iterator<JSONObject> iterator = artrans.iterator();
+//            String trans = "";
+//
+//            while (iterator.hasNext()) {
+//              JSONObject oJson = iterator.next();
+//              trans += ";" + (String) oJson.get("sTransNox")
+//                      + "@" + oJson.get("dTransact").toString()
+//                      + "@" + (String) oJson.get("sSourceNo")
+//                      + "@" + (String) oJson.get("sSourceCD")
+//                      + "@" + ((Double) oJson.get("nPointsxx")).longValue();
+//            }
+//
+//            qrdata += "»" + trans.substring(1);
+//
+//            System.out.println(qrdata);
+//            qrdata = qrdata.replaceAll("[^A-Za-z0-9+.»;@-]", "");
+//            qrdata = MySQLAESCrypt.Encrypt(qrdata, "20190625");
+//            String otp = (String) poTransx.get("sOTPasswd");
+//
+//            String qrpin = "";
+//            try{
+//                ScanPin loPin = new ScanPin();
+//                loPin.setData(qrdata);
+//                
+//                javafx.application.Application.launch(loPin.getClass());
+//                
+//                qrpin = loPin.getData();
+//            }catch (Exception ex){
+//                qrpin = Webcam.getPIN(qrdata);
+//            }
+//
+//            if (qrpin.equalsIgnoreCase(otp))
+//                return true;
+//            else {
+//                psMessagex = "QR code not matched from the transaction.";
+//                return false;
+//            }
         } else { //otp validation
             try {
                 ValidateOTP loOTP = new ValidateOTP();

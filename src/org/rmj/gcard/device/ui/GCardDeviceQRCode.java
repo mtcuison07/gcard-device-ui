@@ -5,11 +5,8 @@
  */
 package org.rmj.gcard.device.ui;
 
-import java.io.File;
 import java.util.Calendar;
 import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -21,9 +18,7 @@ import org.rmj.appdriver.SQLUtil;
 import org.rmj.appdriver.agentfx.ui.ValidateOTP;
 import org.rmj.appdriver.agentfx.ui.showFXDialog;
 import org.rmj.gcard.service.GCLoadInfo;
-import org.rmj.webcamfx.lib.QRCode;
 import org.rmj.webcamfx.ui.ReadGCard;
-import org.rmj.webcamfx.ui.ScanMe;
 import org.rmj.webcamfx.ui.ScanPin;
 import org.rmj.webcamfx.ui.Webcam;
 
@@ -44,11 +39,6 @@ public class GCardDeviceQRCode implements GCardDevice{
     public boolean setCardNo(String fsCardNmbr) {
         psCardNmbr = fsCardNmbr.replace("-", "");
         return true;
-        
-        //mac 2020.06.13
-        //old code
-        //psMessagex = "Setting of Card No for QR Code Reader User Interface is not allowed";
-        //return false;
     }
 
     @Override
@@ -118,8 +108,6 @@ public class GCardDeviceQRCode implements GCardDevice{
         
         if (System.getProperty("app.gcard.digital.1").equals("0")){ //mobile app qr scanning code validation
             return true;
-//mac 2024.02.26
-//  comment out this block of code for implementation of TDS
 //            String qrdata = (String) poTransx.get("SOURCE") 
 //                                + "»" + (String) poTransx.get("sOTPasswd")
 //                                + "»" + (String) poDetail.get("sMobileNo")
@@ -127,7 +115,6 @@ public class GCardDeviceQRCode implements GCardDevice{
 //                                + "»" + (String) poDetail.get("sCardNmbr")
 //                                + "»" + (String) poDetail.get("sMobileNo");
 //            
-//            //(String) poDetail.get("sIMEINoxx")
 //            JSONArray artrans = (JSONArray) poTransx.get("DETAIL");
 //            Iterator<JSONObject> iterator = artrans.iterator();
 //            String trans = "";
